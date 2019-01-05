@@ -4,15 +4,23 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './Controlers/app.component';
 import { AppLandingComponent } from './app-landing/app-landing.component';
+import { environment } from '../environments/environment';
+import { AngularFireModule } from '@angular/fire';
+import { AngularFireStorageModule } from '@angular/fire/storage';
+import { AngularFirestoreModule } from '@angular/fire/firestore';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    AppLandingComponent
+    AppLandingComponent,
+    
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFireStorageModule,
+    AngularFirestoreModule
   ],
   providers: [],
   bootstrap: [AppComponent]
