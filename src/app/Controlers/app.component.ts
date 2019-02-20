@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
+import { Title } from '@angular/platform-browser';
 
-export interface Item { title: string; subtitle: string;}
+export interface Item { title: string; subtitle: string; creationDate: Date;}
 
 @Component({
   selector: 'app-root',
@@ -10,17 +11,15 @@ export interface Item { title: string; subtitle: string;}
   styleUrls: ['../Styles/app.component.css']
 })
 export class AppComponent {
-  public item1: any;
-  items: Observable<any[]>;
+  public itemDoc: AngularFirestoreDocument<Item>;
+  item: Observable<Item>;
+  public title: string;
   constructor(private afs: AngularFirestore){
-    //this.itemDoc = this.afs.collection("/main-site").doc("header");
-    //this.item1 = this.itemDoc.get().then(function(doc) {console.log(doc.data())});
-    //this.itemsCollection = afs.collection<Item>('main-site/header');
-    //this.items = afs.collection("/main-site").valueChanges();
-    let self = this;
-    this.afs.collection("/main-site").doc("header").ref.get().then(doc => {
-      self.item1 = doc.data();
-    });
+    this.itemDoc = afs.doc<Item>("main-header/1");
+    this.item = this.itemDoc.valueChanges();
+    this.item.subscribe(v => this.title = v.title);
   }
-
+  update(item: Item) {
+    this.itemDoc.update(item);
+  }
 }
